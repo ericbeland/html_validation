@@ -9,6 +9,8 @@ group :development do
   gem "bundler"  
 end
 
+gem 'rdoc'
+gem 'thor'
 
 # Unix Rubies (OSX, Linux)  
 platform :ruby do

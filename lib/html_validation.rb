@@ -21,7 +21,6 @@ require 'rbconfig'
 require File.expand_path(File.join(File.dirname(__FILE__),  'html_validation/html_validation_result'))
 require File.expand_path(File.join(File.dirname(__FILE__),  'html_validation/html_validation_matcher'))
 
-
 module PageValidations
   
   class HTMLValidation
@@ -31,7 +30,7 @@ module PageValidations
     # what else you might use for this string instead of "-qi", however "-qi" is probably what 
     # you want 95% of the time.
   
-    # You may also pass :ignore_proprietary=>true as an option to suppress messages like: 
+    # You may also pass :ignore_proprietary => true as an option to suppress messages like: 
     #  line 1 column 176 - Warning: <textarea> proprietary attribute "wrap"
     #  line 1 column 176 - Warning: <textarea> proprietary attribute "spellcheck"
   
@@ -39,7 +38,7 @@ module PageValidations
     # HTML Validation status and validation results are stored along with your source. 
     def initialize(folder_for_data = nil, options = {})
       self.data_folder = folder_for_data || default_result_file_path
-      @options      = options
+      @options         = options
     end
 
     # For each stored exception, yield an HTMLValidationResult object to allow the user to 

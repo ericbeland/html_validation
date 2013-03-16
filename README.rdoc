@@ -78,7 +78,7 @@ On linux/OS X machines, confirm the right installation path shows up with:  whic
     in the data_folder. Typically this is the default folder: spec/.validation.
     After a validation fails, run the thor task to accept or reject validation exceptions.
 
-    From your project's root folder, run:    validation:review 
+    From your project's root folder, run:    thor validation:review 
     
     Note, if you configure an alternate data_folder, you may pass it as an option
     to the Thor task.
