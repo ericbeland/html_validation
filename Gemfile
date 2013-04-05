@@ -11,6 +11,7 @@ end
 
 gem 'rdoc'
 gem 'thor'
+gem 'open3'
 
 # Unix Rubies (OSX, Linux)  
 platform :ruby do
