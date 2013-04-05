@@ -9,9 +9,9 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/ericbeland/html_validation"
 
   gem.files         = `git ls-files`.split($\)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "html_validation"
   gem.require_paths = ["lib"]
+  gem.executables   = ['validation']  
   gem.version       = PageValidations::HTML_VALIDATOR_VERSION
 end

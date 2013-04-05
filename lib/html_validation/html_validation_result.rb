@@ -1,4 +1,6 @@
 require 'open3'
+require File.join(File.dirname(__FILE__), '..', 'html_validation')
+
 
 class HTMLValidationResult
   attr_accessor :resource, :html, :exceptions

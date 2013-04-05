@@ -1,8 +1,5 @@
-require 'html_validation'
 
-# This is a sample matcher for use with Rspec and Capybara. 
-# https://github.com/jnicklas/capybara 
-# keep this in spec/support/matchers
+
 module PageValidations
   
   class HaveValidHTML
