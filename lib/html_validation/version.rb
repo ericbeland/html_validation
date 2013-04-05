@@ -1,3 +1,3 @@
 module PageValidations
-  HTML_VALIDATOR_VERSION = "0.4.0"
+  HTML_VALIDATOR_VERSION = "0.4.1"
 end
