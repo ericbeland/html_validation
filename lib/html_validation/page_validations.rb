@@ -1,14 +1,13 @@
 require File.expand_path(File.join(File.dirname(__FILE__),  'have_valid_html'))
 
 module PageValidations
-  # Namespace planned for future additional validations
+  # Namespace planned for future additional validations and master wrapper gem
 
   @@data_path = nil
 
   def self.included(base)
     # get path of including file to set a default path to save results
     @@data_path = File.expand_path(File.dirname(caller[0].partition(":")[0]))
-    p "Data PATH WAS #{@@data_path}"
   end
 
   def self.data_path
