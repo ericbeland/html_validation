@@ -100,7 +100,7 @@ module PageValidations
       rootpath   = Rails.root if defined?(Rails)
       rootpath ||= ::PageValidations.data_path if ::PageValidations.data_path
       rootpath ||= posix ? '/tmp/' : "c:\\tmp\\"
-      File.join(rootpath, '.validation')
+      File.join(rootpath, 'spec', '.validation')
     end
 
     private
