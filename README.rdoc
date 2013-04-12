@@ -1,45 +1,58 @@
 = HTML Validation
 
 html_validation helps you validate, track, and fix or accept HTML validation
-issues without depending on an external web service. 
-The idea is to take an HTML markup string associated 
-with a particular resource (file or URL) and validate it locally. 
-No web connection or dependency on a 3rd party web service is involved--just an 
-install of HTML Tidy, which is supported by the W3C. An RSPec matcher is included.
+issues without depending on an external web service.
+The idea is to take an HTML markup string associated
+with a particular resource (file or URL) and validate it locally.
+No web connection or dependency on a 3rd party web service is involved--just an
+install of HTML Tidy, which is supported by the W3C. An RSpec matcher is included.
 
-HTML Validation is intended to be used in acceptance tests, test suites or rake 
-tasks to alert you to changes in your html's validity so you can fix them, or 
-barring that, review and accept any errors and warnings. 
+HTML Validation is intended to be used in acceptance tests, test suites or rake
+tasks to alert you to changes in your html's validity so you can fix them, or
+barring that, review and accept any errors and warnings.
 
 == HTML 5
 
 The current (as of March 2013) default version of Tidy doesn't support HTML 5.
-To get HTML 5 support, install this fork of tidy:  https://github.com/w3c/tidy-html5 
-Download the repo as a zip file and extract somewhere, then follow the instructions 
+To get HTML 5 support, install this fork of tidy:  https://github.com/w3c/tidy-html5
+Download the repo as a zip file and extract somewhere, then follow the instructions
 given on the page (using sudo for make commands if on Linux).
 
 Be sure to get rid of the old tidy first if you have it already.
 
 Redhat/Fedora:    sudo yum erase tidy
+
 Ubuntu:           sudo apt-get remove tidy
+
 OS X:             sudo port uninstall tidy
 
-On linux/OS X machines, confirm the right installation path shows up with:  which tidy
+On linux/OS X machines, confirm the right installation path using:  which tidy
 
 == RSpec Setup / Usage:
-    Add to spec/spec_helper.rb:  
- 
+    Add to spec/spec_helper.rb:
+
     require 'html_validation'
     include PageValidations
 
-    Now, within your Integration Tests, you can do this: 
+    Now, within your Integration Tests, you can do this:
 
     page.should have_valid_html
 
     It can be convenient to see the html printed in the RSpec failure messages.
-    To enable this feature:
+    To enable this feature (globally for all):
 
     HaveValidHTML.show_html_in_failures = true
+
+
+    # All tidy flags, including using a config file can be passed.
+
+    # A shortcut to disable Tidy Warning messages (they are on by default)
+    # has been created for your convenience. However, some things that might be
+    # called "errors" show up as warnings, so the recommended approach is
+    # run, then accept the errors / warnings that are noted.
+    HTMLValidation.show_warnings = false
+
+
 
 == Non-RSpec Usage:
 
@@ -48,61 +61,64 @@ On linux/OS X machines, confirm the right installation path shows up with:  whic
 
     h = HTMLValidation.new
     v = h.validation("<html>foo</html>", 'http://somesite.com/index.html')
-    
-    # Note: The second argument (resource) just serves as an identifier used to 
+
+    # Note: The second argument (resource) just serves as an identifier used to
     # name our results files, and no data is actually retrieved for you from on the URL!
 
     v.valid?
     -> false
-    
+
     v.exceptions
     ->  line 1 column 1 - Warning: missing <!DOCTYPE> declaration
     ->  line 1 column 9 - Warning: plain text isn't allowed in <head> elements
     ->  line 1 column 9 - Warning: inserting missing 'title' element
-  
+
     v.accept!
-    
+
     v.valid?
     -> true
-	
-  # Note: after the exceptions string has been accepted, the exceptions 
-  # are still available in v.exceptions even though valid? will return true.
 
-  # The exception string is treated and matched as a whole. The current 
-  # implementation does not allow partial acceptance of individual
-  # results in a result string. 
-    
-== Accepting Errors
-    
+   Note: after the exceptions string has been accepted, the exceptions
+   are still available in v.exceptions even though valid? will return true.
+   This is so you can print them out, nag yourself, etc.
+
+   The exception string is treated and matched as a whole. The current
+   implementation does not allow partial acceptance of individual
+   results in a result string.
+
+== Accepting Errors / Warnings
+
     The HTML Validation gem stores failure data per-resource. The results are stored
     in the data_folder. Typically this is the default folder: spec/.validation.
     After a validation fails, run the thor task to accept or reject validation exceptions.
 
-    From your project's root folder, run:  validation review 
-    
+    From your project's root folder, run:  validation review
+
+    The result string is checked as a whole, so changes require re-review.
+
     Note, if you configure an alternate data_folder, you may pass it as an option
     to the Thor task.
 
-   
+
 == NOTES
-    
-    This is untested on Windows as I don't have access to a Windows machine at the moment. 
+
+    This is untested on Windows as I don't have access to a Windows machine at the moment.
     It is written so it could (probably) work on Windows. Pull requests in this area would
-    be welcomed.  
-                                   
+    be welcomed.
+
 == Requirements
 
     HTML Tidy needs to be either installed at /usr/bin/tidy or on the PATH.
 
 
 == Contributing to html_validation
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
 * Start a feature/bugfix branch
 * Commit and push until you are happy with your contribution
-* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.   
+* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 
 
 === Running the tests
