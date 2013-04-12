@@ -16,9 +16,7 @@ barring that, review and accept any errors and warnings.
 The current (as of March 2013) default version of Tidy doesn't support HTML 5.
 To get HTML 5 support, install this fork of tidy:  https://github.com/w3c/tidy-html5
 
-Be sure to get rid of the old tidy first if you have it already.
-
-Debian flavors: sudo apt-get remove tidy
+Be sure to get rid of the old tidy first if you have it already. on Debian variants: sudo apt-get remove tidy
 
 Download the repo as a zip file and extract somewhere, then follow the instructions
 given on the page (using sudo for make commands if on Linux).
@@ -36,17 +34,19 @@ On linux/OS X machines, confirm the right installation path using:  which tidy
     page.should have_valid_html
 
     It can be convenient to see the html printed in the RSpec failure messages.
-    To enable this feature (globally for all):
+    To set this feature (globally for all):
 
     HaveValidHTML.show_html_in_failures = true
 
 
-    All tidy flags, including using a config file can be passed.
+    All tidy flags, including using a config file can be handled.
 
     A shortcut to disable Tidy Warning messages (they are on by default)
     has been created for your convenience. However, some things that might be
     called "errors" show up as warnings, so the recommended approach is
-    run, then accept the errors / warnings that are noted.
+    run, then accept the errors / warnings that are noted. The shortcut
+    is:
+
     HTMLValidation.show_warnings = false
 
 
@@ -60,7 +60,7 @@ On linux/OS X machines, confirm the right installation path using:  which tidy
     v = h.validation("<html>foo</html>", 'http://somesite.com/index.html')
 
     # Note: The second argument (resource) just serves as an identifier used to
-    # name our results files, and no data is actually retrieved for you from on the URL!
+    # name the results files, and no data is actually retrieved for you from on the URL!
 
     v.valid?
     -> false
@@ -75,18 +75,20 @@ On linux/OS X machines, confirm the right installation path using:  which tidy
     v.valid?
     -> true
 
-   Note: after the exceptions string has been accepted, the exceptions
+   After the exceptions string has been accepted, the exceptions
    are still available in v.exceptions even though valid? will return true.
    This is so you can print them out, nag yourself, etc.
 
    The exception string is treated and matched as a whole. The current
    implementation does not allow partial acceptance of individual
-   results in a result string.
+   results in a result string. However, line numbers are ignored, so there is
+   some flexibility in terms of being able to make changes without re-reviewing
+   what passes. Of course, if your HTML is totally clean, no worries.
 
 == Accepting Errors / Warnings
 
     The HTML Validation gem stores failure data per-resource. The results are stored
-    in the data_folder. Typically this is the default folder: spec/.validation.
+    in the data_folder. Typically this is the default folder: .validation in the project root.
     After a validation fails, run the thor task to accept or reject validation exceptions.
 
     From your project's root folder, run:  validation review
