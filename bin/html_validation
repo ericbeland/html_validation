@@ -5,7 +5,7 @@ require 'thor'
 require 'html_validation'
 
 
-class Validation < Thor
+class HTMLValidationReview < Thor
   include PageValidations
   desc "review", "Review and Accept (or fix and rerun) HTML Validation errors"
 
@@ -30,4 +30,4 @@ class Validation < Thor
   end
 end
 
-Validation.start
+HTMLValidationReview.start

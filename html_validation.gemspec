@@ -12,6 +12,6 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "html_validation"
   gem.require_paths = ["lib"]
-  gem.executables   = ['validation']  
+  gem.executables   = ['html_validation']
   gem.version       = PageValidations::HTML_VALIDATOR_VERSION
 end

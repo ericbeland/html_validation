@@ -91,7 +91,7 @@ On linux/OS X machines, confirm the right installation path using:  which tidy
     in the data_folder. Typically this is the default folder: .validation in the project root.
     After a validation fails, run the thor task to accept or reject validation exceptions.
 
-    From your project's root folder, run:  validation review
+    From your project's root folder, run:  html_validation review
 
     The result string is checked as a whole, so changes require re-review.
 

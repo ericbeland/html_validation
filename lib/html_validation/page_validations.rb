@@ -60,7 +60,7 @@ module PageValidations
     # Note that changing this setting (or any flag) can change how
     # the result files are seen in terms of their acceptance.
     # Meaning, if you have previously accepted a page with warnings either
-    # on or off, you will probably need to re-run the 'validation review' command
+    # on or off, you will probably need to re-run the 'html_validation review' command
     # following your first run with the new setting.
     def self.show_warnings=(val)
       if val
