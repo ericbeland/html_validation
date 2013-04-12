@@ -8,10 +8,10 @@ module PageValidations
     # The response is passed in as an argument when you do this:
     # page.should have_valid_html
   
-    @@show_html_in_failures = false
+    @@html_in_failures = false
  
     def self.show_html_in_failures=(val)
-      @@show_html_in_failures = val
+      @@html_in_failures = val
     end
   
     def matches?(page)
@@ -25,11 +25,11 @@ module PageValidations
     end
 
     def failure_message_for_should
-      "#{@v.resource} Invalid html (fix or run rake html_validation task to add exceptions)\n#{@v.resource} exceptions:\n #{@v.exceptions}\n\n #{@v.html if @@show_html_in_failures}"
+      "#{@v.resource} Invalid html (fix or run 'validation review' to add exceptions)\n#{@v.resource} exceptions:\n #{@v.exceptions}\n\n #{@v.html if @@html_in_failures}"
     end
   
     def failure_message_for_should_not
-      "#{@v.resource} Expected valid? to fail but didn't. Did you accidentally accept these html validation errors?  \n#{@v.resource} exceptions:\n #{@v.exceptions}\n\n #{@v.html if @@show_html_in_failures}"
+      "#{@v.resource} Expected valid? to fail but didn't. Did you accidentally accept these validation errors?  \n#{@v.resource} exceptions:\n #{@v.exceptions}\n\n #{@v.html if @@html_in_failures}"
     end  
   
   end
