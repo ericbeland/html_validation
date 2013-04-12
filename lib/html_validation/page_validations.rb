@@ -1,6 +1,22 @@
 module PageValidations
   # Namespace planned for future additional validations
 
+  @@data_path = nil
+
+  def self.included(base)
+    # get path of including file to set a default path to save results
+    @@data_path = File.expand_path(File.dirname(caller[0].partition(":")[0]))
+    p "Data PATH WAS #{@@data_path}"
+  end
+
+  def self.data_path
+    @@data_path
+  end
+
+  def self.data_path=(path)
+    @@data_path = path
+  end
+
 
   class HTMLValidation
 
@@ -80,7 +96,7 @@ module PageValidations
     def default_result_file_path
       posix      = RbConfig::CONFIG['host_os'] =~ /(darwin|linux)/
       rootpath   = Rails.root if defined?(Rails)
-      rootpath ||= HTMLValidationMatcher.data_path if HTMLValidationMatcher.data_path
+      rootpath ||= ::PageValidations.data_path if ::PageValidations.data_path
       rootpath ||= posix ? '/tmp/' : "c:\\tmp\\"
       File.join(rootpath, '.validation')
     end
