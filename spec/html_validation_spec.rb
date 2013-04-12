@@ -73,20 +73,20 @@ describe "HTMLValidation" do
   end
 
   it "should work without a data path being manually set" do
-     h = HTMLValidation.new()
-     result = h.validation(good_html, "http://mybestsite.com")
-     result.exceptions.should be_empty
+    h = HTMLValidation.new()
+    result = h.validation(good_html, "http://mybestsite.com")
+    result.exceptions.should be_empty
   end
 
   it "should not show (should ignore) warnings when they are turned off" do
-     HTMLValidation.show_warnings = false
-     h = HTMLValidation.new()
-     result = h.validation(warning_html, "http://mywarningsite.com")
-     result.exceptions.should be_empty
-     HTMLValidation.show_warnings = true
-     h = HTMLValidation.new()
-     result = h.validation(warning_html, "http://myotherwarningsite.com")
-     result.exceptions.should_not be_empty
+    HTMLValidation.show_warnings = false
+    h = HTMLValidation.new()
+    result = h.validation(warning_html, "http://mywarningsite.com")
+    result.exceptions.should be_empty
+    HTMLValidation.show_warnings = true
+    h = HTMLValidation.new()
+    result = h.validation(warning_html, "http://myotherwarningsite.com")
+    result.exceptions.should_not be_empty
   end
 
 
@@ -111,10 +111,10 @@ describe "HTMLValidation" do
       had_exceptions = false
       @h.each_exception do |e|
         had_exceptions = true
-          e.is_a?(HTMLValidationResult).should be_true
-          (e.resource.length > 0).should be_true
-          (e.html.length > 0).should be_true
-        end
+        e.is_a?(HTMLValidationResult).should be_true
+        (e.resource.length > 0).should be_true
+        (e.html.length > 0).should be_true
+      end
       had_exceptions.should be_true
     end
 
