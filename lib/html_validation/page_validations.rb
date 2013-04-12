@@ -1,3 +1,5 @@
+require File.expand_path(File.join(File.dirname(__FILE__),  'have_valid_html'))
+
 module PageValidations
   # Namespace planned for future additional validations
 
