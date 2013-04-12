@@ -15,16 +15,13 @@ barring that, review and accept any errors and warnings.
 
 The current (as of March 2013) default version of Tidy doesn't support HTML 5.
 To get HTML 5 support, install this fork of tidy:  https://github.com/w3c/tidy-html5
-Download the repo as a zip file and extract somewhere, then follow the instructions
-given on the page (using sudo for make commands if on Linux).
 
 Be sure to get rid of the old tidy first if you have it already.
 
-Redhat/Fedora:    sudo yum erase tidy
+Debian flavors: sudo apt-get remove tidy
 
-Ubuntu:           sudo apt-get remove tidy
-
-OS X:             sudo port uninstall tidy
+Download the repo as a zip file and extract somewhere, then follow the instructions
+given on the page (using sudo for make commands if on Linux).
 
 On linux/OS X machines, confirm the right installation path using:  which tidy
 
@@ -44,12 +41,12 @@ On linux/OS X machines, confirm the right installation path using:  which tidy
     HaveValidHTML.show_html_in_failures = true
 
 
-    # All tidy flags, including using a config file can be passed.
+    All tidy flags, including using a config file can be passed.
 
-    # A shortcut to disable Tidy Warning messages (they are on by default)
-    # has been created for your convenience. However, some things that might be
-    # called "errors" show up as warnings, so the recommended approach is
-    # run, then accept the errors / warnings that are noted.
+    A shortcut to disable Tidy Warning messages (they are on by default)
+    has been created for your convenience. However, some things that might be
+    called "errors" show up as warnings, so the recommended approach is
+    run, then accept the errors / warnings that are noted.
     HTMLValidation.show_warnings = false
 
 
