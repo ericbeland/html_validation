@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
- 
+
 require 'rubygems'
 require 'thor'
 require 'html_validation'
@@ -8,18 +8,18 @@ require 'html_validation'
 class Validation < Thor
   include PageValidations
   desc "review", "Review and Accept (or fix and rerun) HTML Validation errors"
-  
+
   method_option :data_path, :aliases => "-d", :desc => "Optional custom data path (if not default of /spec/.validate)"
   def review
-    data_path = options[:data_path] || File.join(Dir.getwd, 'spec', '.validation')
+    data_path = options[:data_path] || File.join(Dir.getwd, '.validation')
     $stdout.puts "Reviewing validation results in: #{data_path}"
-  
+
     HTMLValidation.new(data_path).each_exception do |result|
-      $stdout.puts "Validation exceptions for: #{result.resource}:\n#{result.exceptions}" 
+      $stdout.puts "Validation exceptions for: #{result.resource}:\n#{result.exceptions}"
       $stdout.puts "Accept (y)es (n)o or (q)uit"
       sin = $stdin.gets
       if sin[0].downcase == 'y'
-        result.accept! 
+        result.accept!
         $stdout.puts "Accepted!"
       else
         $stdout.puts "Rejected!"
