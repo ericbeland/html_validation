@@ -58,11 +58,9 @@ class HTMLValidationResult
   end
 
   private
-  # We specifically prefer /usr/bin/tidy by default on *nix as there is another "tidy" program
-  # that could end up earlier on the path.  tidy was installed at this location for me by default.
+
   def tidy_command
-    is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
-    bin = (is_windows or !File.exists?("/usr/bin/tidy")) ? 'tidy' : '/usr/bin/tidy'
+    bin = 'tidy'
     cmd = "#{bin} #{@tidy_flags.join(' ')}"
     cmd
   end
