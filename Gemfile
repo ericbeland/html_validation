@@ -6,19 +6,20 @@ gemspec
 # Include everything needed to run rake, tests, features, etc.
 group :development do
   gem "rspec"
-  gem "bundler"  
+  gem "bundler"
 end
 
 gem 'rdoc'
 gem 'thor'
 gem 'open3'
 
-# Unix Rubies (OSX, Linux)  
+# Unix Rubies (OSX, Linux)
 platform :ruby do
-  
+
 end
 
-# Windows Rubies (RubyInstaller)  
+# Windows Rubies (RubyInstaller)
 platforms :mswin, :mingw do
-  
+
 end
+

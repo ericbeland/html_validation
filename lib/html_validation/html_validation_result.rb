@@ -57,12 +57,21 @@ class HTMLValidationResult
     File.open(data_path("accepted"), 'w') {|f| f.write(@exceptions) }
   end
 
+  def reject!
+    if File.exists?(data_path("accepted"))
+      File.delete data_path("accepted")
+    end
+  end
+
   private
-  # We specifically prefer /usr/bin/tidy by default on *nix as there is another "tidy" program
-  # that could end up earlier on the path.  tidy was installed at this location for me by default.
+  # We used to specifically prefer /usr/bin/tidy by default on *nix as there is another "tidy" program
+  # that could end up earlier on the path. Tidy was installed at this location for me by default.
+  # The norm is now to custom install the tidy fork for HTML 5, though, and respecting the PATH is
+  # better philosophically. Now we expect the PATH to be correct. ie,
+  # if which Tidy being used is an issue, put the right tidy first on the PATH.
   def tidy_command
     is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
-    bin = (is_windows or !File.exists?("/usr/bin/tidy")) ? 'tidy' : '/usr/bin/tidy'
+    bin = is_windows ? 'tidy.exe' : 'tidy'
     cmd = "#{bin} #{@tidy_flags.join(' ')}"
     cmd
   end

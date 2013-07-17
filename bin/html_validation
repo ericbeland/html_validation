@@ -9,7 +9,7 @@ class HTMLValidationReview < Thor
   include PageValidations
   desc "review", "Review and Accept (or fix and rerun) HTML Validation errors"
 
-  method_option :data_path, :aliases => "-d", :desc => "Optional custom data path (if not default of /spec/.validate)"
+  method_option :data_path, :aliases => "-d", :desc => "Optional custom data path (if not default of .validation in project root)"
   def review
     data_path = options[:data_path] || File.join(Dir.getwd, '.validation')
     $stdout.puts "Reviewing validation results in: #{data_path}"
@@ -22,6 +22,7 @@ class HTMLValidationReview < Thor
         result.accept!
         $stdout.puts "Accepted!"
       else
+        result.reject!
         $stdout.puts "Rejected!"
       end
       exit if sin.downcase == 'exit' or sin.downcase == 'quit' or sin.downcase == 'q'

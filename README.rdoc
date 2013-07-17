@@ -13,13 +13,13 @@ barring that, review and accept any errors and warnings.
 
 == HTML 5
 
-The current (as of March 2013) default version of Tidy doesn't support HTML 5.
+The current (as of May 2013) default version of Tidy doesn't support HTML 5.
 To get HTML 5 support, install this fork of tidy:  https://github.com/w3c/tidy-html5
 
-Be sure to get rid of the old tidy first if you have it already. on Debian variants: sudo apt-get remove tidy
-
 Download the repo as a zip file and extract somewhere, then follow the instructions
-given on the page (using sudo for make commands if on Linux).
+given on the page (using sudo for make commands if on Linux).  Add it to the PATH.
+Note that OS X and Debian like to install the old version of tidy in /usr/bin so
+if you don't remove it or place the newer one earlier on the PATH, sadness may ensue.
 
 On linux/OS X machines, confirm the right installation path using:  which tidy
 
@@ -33,18 +33,22 @@ On linux/OS X machines, confirm the right installation path using:  which tidy
 
     page.should have_valid_html
 
+    or with the new syntax:
+
+    expect(page).to have_valid_html
+
     It can be convenient to see the html printed in the RSpec failure messages.
     To set this feature (globally for all):
 
     HaveValidHTML.show_html_in_failures = true
 
 
-    All tidy flags, including using a config file can be handled.
+    All Tidy flags, including using a config file can be handled.
 
     A shortcut to disable Tidy Warning messages (they are on by default)
     has been created for your convenience. However, some things that might be
     called "errors" show up as warnings, so the recommended approach is
-    run, then accept the errors / warnings that are noted. The shortcut
+    run, then accept the errors / warnings that are noted. At your peril, the shortcut
     is:
 
     HTMLValidation.show_warnings = false
@@ -107,7 +111,9 @@ On linux/OS X machines, confirm the right installation path using:  which tidy
 
 == Requirements
 
-    HTML Tidy needs to be either installed at /usr/bin/tidy or on the PATH.
+    HTML Tidy needs to be on the PATH.
+
+    Make sure the right Tidy is being picked up with:  which tidy
 
 
 == Contributing to html_validation
