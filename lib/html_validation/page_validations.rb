@@ -21,6 +21,32 @@ module PageValidations
 
   class HTMLValidation
 
+    def self.result_attributes *names
+      @@result_attributes = names.each do |name|
+        class_eval(%Q{
+          def self.#{name}=(obj)
+            @@#{name} = obj
+          end
+
+          def self.#{name}
+            @@#{name}
+          end
+        })
+      end
+    end
+
+    def result_attributes_and_values
+      {}.tap do |res|
+        @@result_attributes.each do |attr|
+          res[attr] = self.class.send attr
+        end
+      end
+    end
+
+    result_attributes :ignore_errors_on_attributes, :ignore_errors_on_tags
+    self.ignore_errors_on_attributes = []
+    self.ignore_errors_on_tags = []
+
     @@default_tidy_flags = ['-quiet', '-indent']
 
     # The data_folder is where we store our output. options[:tidyopts], which defaults to "-qi"
@@ -40,7 +66,7 @@ module PageValidations
     def initialize(folder_for_data = nil,  tidy_flags = [], options={})
       self.data_folder  = folder_for_data || default_result_file_path
       @tidy_flags       = tidy_flags
-      @options          = options
+      @options          = result_attributes_and_values.merge options
     end
 
 
