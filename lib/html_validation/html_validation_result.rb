@@ -102,8 +102,15 @@ class HTMLValidationResult
 	  str.gsub!(/^line.*proprietary.*\n/, '') if options[:ignore_proprietary] # if you use IE only attributes like wrap, or spellcheck or things not in standard
     str.gsub!(/^line.*(?:Error|Warning):.*<\/?(?:#{options[:ignore_errors_on_tags].join('|')})>.*\n/, '') if options[:ignore_errors_on_tags] && options[:ignore_errors_on_tags].any?
     str.gsub!(/^line.*(?:Error|Warning):.* attribute \"(?:#{options[:ignore_errors_on_attributes].join('|')})\".*\n/, '') if options[:ignore_errors_on_attributes] && options[:ignore_errors_on_attributes].any?
+    if options[:ignore_errors] && options[:ignore_errors].any? && str.gsub(/^line.*(?:Error|Warning):/, '') =~ ignore_errors
+      str.gsub!(Regexp.new(/^line.*(?:Error|Warning):/.source + '.*' + ignore_errors.source + '.*' +/\n/.source), '')
+    end
     str.gsub(/line [0-9]+ column [0-9]+ -/, '')
    # /line [0-9]+ column [0-9]+ - / +  =~ "line 1 column 1 - Warning: missing <!DOCTYPE> declaration"
+  end
+
+  def ignore_errors
+    /(?:#{options[:ignore_errors].join('|')})/
   end
 
   def validate
