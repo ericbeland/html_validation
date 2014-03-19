@@ -14,4 +14,5 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.executables   = ['html_validation']
   gem.version       = PageValidations::HTML_VALIDATOR_VERSION
+  gem.license = 'MIT'
 end
