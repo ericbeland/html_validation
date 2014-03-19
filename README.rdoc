@@ -59,8 +59,7 @@ On linux/OS X machines, confirm the right installation path using:  which tidy
 
     require 'html_validation'
 
-
-    h = HTMLValidation.new
+    h = PageValidations::HTMLValidation.new
     v = h.validation("<html>foo</html>", 'http://somesite.com/index.html')
 
     # Note: The second argument (resource) just serves as an identifier used to
