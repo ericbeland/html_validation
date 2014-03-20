@@ -43,10 +43,10 @@ module PageValidations
       end
     end
 
-    result_attributes :ignore_errors, :ignore_errors_on_attributes, :ignore_errors_on_tags
-    self.ignore_errors_on_attributes = []
-    self.ignore_errors_on_tags = []
-    self.ignore_errors = []
+    result_attributes :ignored_errors, :ignored_attribute_errors, :ignored_tag_errors
+    self.ignored_attribute_errors = []
+    self.ignored_tag_errors = []
+    self.ignored_errors = []
 
     @@default_tidy_flags = ['-quiet', '-indent']
 

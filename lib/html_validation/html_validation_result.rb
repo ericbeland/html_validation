@@ -100,17 +100,17 @@ class HTMLValidationResult
   def filter(str)
 	  str.gsub!(/^line.*trimming empty.*\n/, '')  # the messages about empty are overzealous, and not invalid
 	  str.gsub!(/^line.*proprietary.*\n/, '') if options[:ignore_proprietary] # if you use IE only attributes like wrap, or spellcheck or things not in standard
-    str.gsub!(/^line.*(?:Error|Warning):.*<\/?(?:#{options[:ignore_errors_on_tags].join('|')})>.*\n/, '') if options[:ignore_errors_on_tags] && options[:ignore_errors_on_tags].any?
-    str.gsub!(/^line.*(?:Error|Warning):.* attribute \"(?:#{options[:ignore_errors_on_attributes].join('|')})\".*\n/, '') if options[:ignore_errors_on_attributes] && options[:ignore_errors_on_attributes].any?
-    if options[:ignore_errors] && options[:ignore_errors].any? && str.gsub(/^line.*(?:Error|Warning):/, '') =~ ignore_errors
-      str.gsub!(Regexp.new(/^line.*(?:Error|Warning):/.source + '.*' + ignore_errors.source + '.*' +/\n/.source), '')
+    str.gsub!(/^line.*(?:Error|Warning):.*<\/?(?:#{options[:ignored_tag_errors].join('|')})>.*\n/, '') if options[:ignored_tag_errors] && options[:ignored_tag_errors].any?
+    str.gsub!(/^line.*(?:Error|Warning):.* attribute \"(?:#{options[:ignored_attribute_errors].join('|')})\".*\n/, '') if options[:ignored_attribute_errors] && options[:ignored_attribute_errors].any?
+    if options[:ignored_errors] && options[:ignored_errors].any? && str.gsub(/^line.*(?:Error|Warning):/, '') =~ ignored_errors_regex
+      str.gsub!(Regexp.new(/^line.*(?:Error|Warning):/.source + '.*' + ignored_errors_regex.source + '.*' +/\n/.source), '')
     end
     str.gsub(/line [0-9]+ column [0-9]+ -/, '')
    # /line [0-9]+ column [0-9]+ - / +  =~ "line 1 column 1 - Warning: missing <!DOCTYPE> declaration"
   end
 
-  def ignore_errors
-    /(?:#{options[:ignore_errors].join('|')})/
+  def ignored_errors_regex
+    /(?:#{options[:ignored_errors].join('|')})/
   end
 
   def validate
