@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    html_validation (0.0.1)
+    html_validation (1.0.0)
 
 GEM
   remote: http://rubygems.org/

@@ -89,6 +89,29 @@ describe "HTMLValidation" do
     result.exceptions.should_not be_empty
   end
 
+  it 'should ignore ignored_attribute_errors' do
+    HTMLValidation.ignored_attribute_errors = ['tabindex']
+    h = HTMLValidation.new()
+    result = h.validation(good_html.gsub('<body>','<body><span tabindex="-1">blabla</span>'), "http://mywarningsite.com")
+    result.valid?.should be_true
+    HTMLValidation.ignored_attribute_errors = []
+  end
+
+  it 'should ignored_tag_errors' do
+    HTMLValidation.ignored_tag_errors = ['inline']
+    h = HTMLValidation.new()
+    result = h.validation(good_html.gsub('<body>','<body><inline>rrr</inline>'), "http://mywarningsite.com")
+    result.valid?.should be_true
+    HTMLValidation.ignored_tag_errors = []
+  end
+
+  it 'should ignored_errors' do
+    HTMLValidation.ignored_errors = ['inline']
+    h = HTMLValidation.new()
+    result = h.validation(good_html.gsub('<body>','<body><inline>rrr</inline>'), "http://mywarningsite.com")
+    result.valid?.should be_true
+    HTMLValidation.ignored_errors = []
+  end
 
   describe "when launching HTML Tidy" do
 

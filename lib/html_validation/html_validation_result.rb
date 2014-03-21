@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), '..', 'html_validation')
 
 
 class HTMLValidationResult
-  attr_accessor :resource, :html, :exceptions
+  attr_accessor :resource, :html, :exceptions, :options
 
   include PageValidations
 
@@ -19,7 +19,7 @@ class HTMLValidationResult
     @exceptions         = ''
     @datapath           = datapath
     @tidy_flags         = (HTMLValidation.default_tidy_flags + tidy_flags).uniq
-	  @ignore_proprietary = options[:ignore_proprietary]
+    @options            = options
     valid?
   end
 
@@ -99,9 +99,18 @@ class HTMLValidationResult
   # accepted exception strings will remain valid.
   def filter(str)
 	  str.gsub!(/^line.*trimming empty.*\n/, '')  # the messages about empty are overzealous, and not invalid
-	  str.gsub!(/^line.*proprietary.*\n/, '') if @ignore_proprietary # if you use IE only attributes like wrap, or spellcheck or things not in standard
+	  str.gsub!(/^line.*proprietary.*\n/, '') if options[:ignore_proprietary] # if you use IE only attributes like wrap, or spellcheck or things not in standard
+    str.gsub!(/^line.*(?:Error|Warning):.*<\/?(?:#{options[:ignored_tag_errors].join('|')})>.*\n/, '') if options[:ignored_tag_errors] && options[:ignored_tag_errors].any?
+    str.gsub!(/^line.*(?:Error|Warning):.* attribute \"(?:#{options[:ignored_attribute_errors].join('|')})\".*\n/, '') if options[:ignored_attribute_errors] && options[:ignored_attribute_errors].any?
+    if options[:ignored_errors] && options[:ignored_errors].any? && str.gsub(/^line.*(?:Error|Warning):/, '') =~ ignored_errors_regex
+      str.gsub!(Regexp.new(/^line.*(?:Error|Warning):/.source + '.*' + ignored_errors_regex.source + '.*' +/\n/.source), '')
+    end
     str.gsub(/line [0-9]+ column [0-9]+ -/, '')
    # /line [0-9]+ column [0-9]+ - / +  =~ "line 1 column 1 - Warning: missing <!DOCTYPE> declaration"
+  end
+
+  def ignored_errors_regex
+    /(?:#{options[:ignored_errors].join('|')})/
   end
 
   def validate

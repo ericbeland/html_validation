@@ -53,6 +53,12 @@ On linux/OS X machines, confirm the right installation path using:  which tidy
 
     HTMLValidation.show_warnings = false
 
+    If you want to ignore specific errors, you can do the following :
+
+      HTMLValidation.ignored_attribute_errors = ['tabindex']
+      HTMLValidation.ignored_tag_errors = ['inline']
+      HTMLValidation.ignored_errors = ['missing li']
+
 
 
 == Non-RSpec Usage:
