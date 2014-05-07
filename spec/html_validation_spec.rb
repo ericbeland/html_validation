@@ -9,15 +9,15 @@ describe "HTMLValidation" do
     @h = HTMLValidation.new('/tmp/validation')
   end
 
-  it "should return false for invalid html" do
+  it "should return false for invalid HTML" do
     result = @h.validation(bad_html, "http://myothersite.com").valid?.should be_false
   end
 
-  it "should return true for valid html" do
+  it "should return true for valid HTML" do
     result = @h.validation(good_html, "http://mysite.com").valid?.should be_true
   end
 
-  it "should have an exception string for invalid html" do
+  it "should have an exception string for invalid HTML" do
     result = @h.validation(bad_html, "http://myfavoritesite.com")
     (result.exceptions.empty?).should be_false
   end
@@ -48,7 +48,7 @@ describe "HTMLValidation" do
     result.valid?.should be_true
   end
 
-  it "should reset accepted exceptions string after seeing valid html for a path" do
+  it "should reset accepted exceptions string after seeing valid HTML for a path" do
     result = @h.validation(bad_html, "http://notmysite.com")
     result.accept!
     result = @h.validation(bad_html, "http://notmysite.com").valid?.should be_true
