@@ -21,7 +21,7 @@ module PageValidations
     end
 
     def description
-      "Have valid html"
+      "have valid HTML"
     end
 
     def failure_message_for_should

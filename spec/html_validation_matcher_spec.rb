@@ -9,7 +9,7 @@ describe "HTMLValidationRSpecMatcher" do
      @page = double("page")
   end
 
-  it "should check page object with the matcher for valid HTML and pass valid html" do
+  it "should check page object with the matcher for valid HTML and pass valid HTML" do
     @page.stub :html => good_html
     @page.stub :body => good_html
     @page.stub :current_url => 'http://www.fake.com/good_page'
