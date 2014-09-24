@@ -1,6 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-
 describe "HTMLValidation" do
   include HTMLValidationHelpers
 
@@ -9,153 +8,144 @@ describe "HTMLValidation" do
     @h = HTMLValidation.new('/tmp/validation')
   end
 
-  it "should return false for invalid HTML" do
-    result = @h.validation(bad_html, "http://myothersite.com").valid?.should be_false
+  it "returns false for invalid HTML" do
+    expect(@h.validation(bad_html, "http://myothersite.com")).not_to be_valid
   end
 
-  it "should return true for valid HTML" do
-    result = @h.validation(good_html, "http://mysite.com").valid?.should be_true
+  it "returns true for valid HTML" do
+    expect(@h.validation(good_html, "http://mysite.com")).to be_valid
   end
 
-  it "should have an exception string for invalid HTML" do
+  it "has an exception string for invalid HTML" do
     result = @h.validation(bad_html, "http://myfavoritesite.com")
-    (result.exceptions.empty?).should be_false
+    expect(result.exceptions).not_to be_empty
   end
 
-  it "should return true for valid? if exceptions are accepted" do
+  it "returns true for valid? if exceptions are accepted" do
     result = @h.validation(bad_html, "http://mynewsite.com")
     result.accept!
-    result = @h.validation(bad_html, "http://mynewsite.com").valid?.should be_true
+    expect(@h.validation(bad_html, "http://mynewsite.com")).to be_valid
   end
 
-  it "should show no exceptions for a truly valid file" do
+  it "shows no exceptions for a truly valid file" do
     result = @h.validation(good_html, "http://mybestsite.com")
-    (result.exceptions == '').should be_true
+    expect(result.exceptions).to be_empty
   end
 
-  it "should still show exceptions when returning valid for an accepted exception string" do
+  it "shows exceptions when returning valid for an accepted exception string" do
     result = @h.validation(bad_html, "http://myworstsite.com")
     result.accept!
     result = @h.validation(bad_html, "http://myworstsite.com")
-    result.valid?.should be_true
-    result.exceptions.length.should_not be_zero
+    expect(result).to be_valid
+    expect(result.exceptions).not_to be_empty
   end
 
-  it "should reset exceptions after each call to valid?" do
+  it "resets exceptions after each call to valid?" do
     result = @h.validation(bad_html, "http://myuglysite.com")
     result = @h.validation(good_html, "http://myuglysite.com")
-    result.exceptions.length.should be_zero
-    result.valid?.should be_true
+    expect(result.exceptions).to be_empty
+    expect(result).to be_valid
   end
 
-  it "should reset accepted exceptions string after seeing valid HTML for a path" do
+  it "resets accepted exceptions string after seeing valid HTML for a path" do
     result = @h.validation(bad_html, "http://notmysite.com")
     result.accept!
-    result = @h.validation(bad_html, "http://notmysite.com").valid?.should be_true
-    # now we see valid, so we should reset
-    result = @h.validation(good_html, "http://notmysite.com").valid?.should be_true
-    result = @h.validation(bad_html, "http://notmysite.com").valid?.should be_false
+
+    expect(@h.validation(bad_html, "http://notmysite.com")).to be_valid
+    expect(@h.validation(good_html, "http://notmysite.com")).to be_valid
+    expect(@h.validation(bad_html, "http://notmysite.com")).not_to be_valid
   end
 
-  it "should not pass a different non-accepted exception" do
+  it "doesn't pass a different non-accepted exception" do
     result = @h.validation(bad_html, "http://mycoolsite.com")
     result.accept!
-    result = @h.validation("<html></body></html>", "http://mycoolsite.com").valid?.should be_false
+    expect(@h.validation("<html></body></html>", "http://mycoolsite.com")).not_to be_valid
   end
 
-  it "should ignore proprietary tags when ignore_proprietary is passed" do
+  it "ignores proprietary tags when ignore_proprietary is passed" do
     html_with_proprietary=good_html.gsub('<body>','<body><textarea wrap="true" spellcheck="true">hi</textarea>')
     result = @h.validation(html_with_proprietary, "http://mycrosoft.com")
-    result.valid?.should be_false
+    expect(result).not_to be_valid
+
     @h = HTMLValidation.new('/tmp/validation', [], :ignore_proprietary => true)
     result = @h.validation(html_with_proprietary, "http://mycrosoft.com")
-    result.valid?.should be_true
+    expect(result).to be_valid
   end
 
-  it "should work without a data path being manually set" do
-    h = HTMLValidation.new()
+  it "works without a data path being manually set" do
+    h = HTMLValidation.new
     result = h.validation(good_html, "http://mybestsite.com")
-    result.exceptions.should be_empty
+    expect(result.exceptions).to be_empty
   end
 
-  it "should not show (should ignore) warnings when they are turned off" do
+  it "respects warnings when they are turned off" do
     HTMLValidation.show_warnings = false
-    h = HTMLValidation.new()
+    h = HTMLValidation.new
     result = h.validation(warning_html, "http://mywarningsite.com")
-    result.exceptions.should be_empty
+    expect(result.exceptions).to be_empty
+
     HTMLValidation.show_warnings = true
-    h = HTMLValidation.new()
+    h = HTMLValidation.new
     result = h.validation(warning_html, "http://myotherwarningsite.com")
-    result.exceptions.should_not be_empty
+    expect(result.exceptions).to_not be_empty
   end
 
-  it 'should ignore ignored_attribute_errors' do
-    HTMLValidation.ignored_attribute_errors = ['tabindex']
-    h = HTMLValidation.new()
+  it "respects ignored_attribute_errors" do
+    HTMLValidation.ignored_attribute_errors = ["tabindex"]
+    h = HTMLValidation.new
     result = h.validation(good_html.gsub('<body>','<body><span tabindex="-1">blabla</span>'), "http://mywarningsite.com")
-    result.valid?.should be_true
+    expect(result).to be_valid
     HTMLValidation.ignored_attribute_errors = []
   end
 
-  it 'should ignored_tag_errors' do
+  it "respects ignored_tag_errors" do
     HTMLValidation.ignored_tag_errors = ['inline']
     h = HTMLValidation.new()
     result = h.validation(good_html.gsub('<body>','<body><inline>rrr</inline>'), "http://mywarningsite.com")
-    result.valid?.should be_true
+    expect(result).to be_valid
     HTMLValidation.ignored_tag_errors = []
   end
 
-  it 'should ignored_errors' do
+  it "respects ignored_errors" do
     HTMLValidation.ignored_errors = ['inline']
     h = HTMLValidation.new()
     result = h.validation(good_html.gsub('<body>','<body><inline>rrr</inline>'), "http://mywarningsite.com")
-    result.valid?.should be_true
+    expect(result).to be_valid
     HTMLValidation.ignored_errors = []
   end
 
-  describe "when launching HTML Tidy" do
+  context "when launching HTML Tidy" do
 
-    it "should let me pass different Tidy command line options" do
+    it "lets me pass different Tidy command line options" do
       @h = HTMLValidation.new('/tmp/validation')
       result = @h.validation("<html>foo", 'c:\mycoolapp\somesite.html')
-      result.exceptions.include?("Warning:").should be_true
+      expect(result.exceptions).to include("Warning:")
+
       @h = HTMLValidation.new('/tmp/validation', ["--show-warnings false"])
       result = @h.validation("<html>foo", 'c:\mycoolapp\somesite.html')
-      result.exceptions.include?("Warning:").should be_false
+      expect(result.exceptions).not_to include("Warning:")
     end
 
   end
 
-  describe "when walking exception results" do
+  context "when walking exception results" do
 
-    it "should yield loaded exception results" do
+    it "yields loaded exception results" do
       @h = HTMLValidation.new('/tmp/validation')
       result = @h.validation("<html>foo", 'c:\evencooler.com\somesite.html')
       had_exceptions = false
       @h.each_exception do |e|
         had_exceptions = true
-        e.is_a?(HTMLValidationResult).should be_true
-        (e.resource.length > 0).should be_true
-        (e.html.length > 0).should be_true
+
+        expect(e).to be_a(HTMLValidationResult)
+        expect(e.resource).not_to be_empty
+        expect(e.html).not_to be_empty
       end
-      had_exceptions.should be_true
+
+      expect(had_exceptions).to be_truthy
     end
 
   end
 
-
-  private
-
-
-  def tmp_path
-    is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
-    is_windows ? 'c:\temp\validation' : '/tmp/validation'
-  end
-
-  # clean our temp dir without killing it
-  def clean_dir(dir)
-    Dir.chdir(dir)
-    Dir.glob('*').each {|f| FileUtils.rm f }
-  end
-
 end
+
