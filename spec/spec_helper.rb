@@ -14,3 +14,15 @@ RSpec.configure do |config|
 
 
 end
+
+def tmp_path
+  is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
+  is_windows ? 'c:\temp\validation' : '/tmp/validation'
+end
+
+# clean our temp dir without killing it
+def clean_dir(dir)
+  Dir.chdir(dir)
+  Dir.glob('*').each {|f| FileUtils.rm f }
+end
+
