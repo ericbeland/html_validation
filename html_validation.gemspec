@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Local HTML validation for tests and RSpec. }
   gem.homepage      = "https://github.com/ericbeland/html_validation"
 
-  gem.files         = `git ls-files`.split($\)
+  gem.files         = `git ls-files lib`.split($\)
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "html_validation"
   gem.require_paths = ["lib"]
