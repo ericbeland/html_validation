@@ -123,8 +123,8 @@ module PageValidations
 
     def default_result_file_path
       posix      = RbConfig::CONFIG['host_os'] =~ /(darwin|linux)/
-      rootpath   = Rails.root if defined?(Rails)
-      rootpath ||= ::PageValidations.data_path if ::PageValidations.data_path
+      rootpath   = ::PageValidations.data_path if ::PageValidations.data_path
+      rootpath ||= Rails.root if defined?(Rails)
       rootpath ||= posix ? '/tmp/' : "c:\\tmp\\"
       File.join(rootpath, '.validation')
     end
