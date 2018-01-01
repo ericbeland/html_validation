@@ -14,12 +14,12 @@ class HTMLValidationResult
 
   # options ex: options[:tidy_opts] = ['--show-warnings false']
   def initialize(resource, html, datapath, tidy_flags = [], options = {})
-    @resource           = resource
-    @html               = html
-    @exceptions         = ''
-    @datapath           = datapath
-    @tidy_flags         = (HTMLValidation.default_tidy_flags + tidy_flags).uniq
-    @options            = options
+    @resource = resource
+    @html = html
+    @exceptions = ''
+    @datapath = datapath
+    @tidy_flags = (HTMLValidation.default_tidy_flags + tidy_flags).uniq
+    @options = options
     valid?
   end
 
@@ -32,9 +32,9 @@ class HTMLValidationResult
 
   # takes a .url and loads the data into this object
   def self.load_from_files(filepath)
-    resource  = File.open("#{filepath}.resource.txt", 'r').read
-    html      = File.open("#{filepath}.html.txt", 'r').read
-	  HTMLValidationResult.new(resource, html, filepath)
+    resource = File.open("#{filepath}.resource.txt", 'r').read
+    html = File.open("#{filepath}.html.txt", 'r').read
+    HTMLValidationResult.new(resource, html, filepath)
   end
 
   # Validates an html string using html tidy. If there are no warnings or exceptions, or
@@ -54,7 +54,7 @@ class HTMLValidationResult
   # string is identical, valid? will return true. Note that #exceptions will still list the
   # exception string, though, even if it is an accepted exception string.
   def accept!
-    File.open(data_path("accepted"), 'w') {|f| f.write(@exceptions) }
+    File.open(data_path("accepted"), 'w') {|f| f.write(@exceptions)}
   end
 
   def reject!
@@ -82,15 +82,15 @@ class HTMLValidationResult
   end
 
   def save_html_and_exceptions
-    File.open(data_path("html"), 'w')       {|f| f.write(@html) }
-    File.open(data_path("resource"), 'w')   {|f| f.write(@resource) }
-    File.open(data_path("exceptions"), 'w') {|f| f.write(@exceptions) }
+    File.open(data_path("html"), 'w') {|f| f.write(@html)}
+    File.open(data_path("resource"), 'w') {|f| f.write(@resource)}
+    File.open(data_path("exceptions"), 'w') {|f| f.write(@exceptions)}
   end
 
-    # have we previously accepted this exact string for this path?
+  # have we previously accepted this exact string for this path?
   def accepted?(exception_str)
     exception_str = filter(exception_str)
-    File.exists?(data_path('accepted')) ? filter(File.open(data_path('accepted'),"r").read) == exception_str : false
+    File.exists?(data_path('accepted')) ? filter(File.open(data_path('accepted'), "r").read) == exception_str : false
   end
 
   # Line numbers of exceptions are likely to change with any minor edit, so our validation
@@ -98,15 +98,15 @@ class HTMLValidationResult
   # if the errors change position in the file (up or down b/c you add or remove code),
   # accepted exception strings will remain valid.
   def filter(str)
-	  str = str.gsub(/^line.*trimming empty.*\n/, '')  # the messages about empty are overzealous, and not invalid
-	  str = str.gsub(/^line.*proprietary.*\n/, '') if options[:ignore_proprietary] # if you use IE only attributes like wrap, or spellcheck or things not in standard
+    str = str.gsub(/^line.*trimming empty.*\n/, '') # the messages about empty are overzealous, and not invalid
+    str = str.gsub(/^line.*proprietary.*\n/, '') if options[:ignore_proprietary] # if you use IE only attributes like wrap, or spellcheck or things not in standard
     str = str.gsub(/^line.*(?:Error|Warning):.*<\/?(?:#{options[:ignored_tag_errors].join('|')})>.*\n/, '') if options[:ignored_tag_errors] && options[:ignored_tag_errors].any?
     str = str.gsub(/^line.*(?:Error|Warning):.* attribute \"(?:#{options[:ignored_attribute_errors].join('|')})\".*\n/, '') if options[:ignored_attribute_errors] && options[:ignored_attribute_errors].any?
     if options[:ignored_errors] && options[:ignored_errors].any? && str.gsub(/^line.*(?:Error|Warning):/, '') =~ ignored_errors_regex
-      str = str.gsub(Regexp.new(/^line.*(?:Error|Warning):/.source + '.*' + ignored_errors_regex.source + '.*' +/\n/.source), '')
+      str = str.gsub(Regexp.new(/^line.*(?:Error|Warning):/.source + '.*' + ignored_errors_regex.source + '.*' + /\n/.source), '')
     end
     str.gsub(/line [0-9]+ column [0-9]+ -/, '')
-   # /line [0-9]+ column [0-9]+ - / +  =~ "line 1 column 1 - Warning: missing <!DOCTYPE> declaration"
+    # /line [0-9]+ column [0-9]+ - / +  =~ "line 1 column 1 - Warning: missing <!DOCTYPE> declaration"
   end
 
   def ignored_errors_regex
