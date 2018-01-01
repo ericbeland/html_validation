@@ -115,7 +115,7 @@ class HTMLValidationResult
 
   def validate
     stdin, stdout, stderr = Open3.popen3(tidy_command)
-    stdin.puts @html
+    stdin.puts @html.encode!("UTF-8", invalid: :replace, undef: :replace).force_encoding("utf-8")
     stdin.close
     stdout.close
     result = stderr.read
