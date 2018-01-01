@@ -98,12 +98,12 @@ class HTMLValidationResult
   # if the errors change position in the file (up or down b/c you add or remove code),
   # accepted exception strings will remain valid.
   def filter(str)
-	  str.gsub!(/^line.*trimming empty.*\n/, '')  # the messages about empty are overzealous, and not invalid
-	  str.gsub!(/^line.*proprietary.*\n/, '') if options[:ignore_proprietary] # if you use IE only attributes like wrap, or spellcheck or things not in standard
-    str.gsub!(/^line.*(?:Error|Warning):.*<\/?(?:#{options[:ignored_tag_errors].join('|')})>.*\n/, '') if options[:ignored_tag_errors] && options[:ignored_tag_errors].any?
-    str.gsub!(/^line.*(?:Error|Warning):.* attribute \"(?:#{options[:ignored_attribute_errors].join('|')})\".*\n/, '') if options[:ignored_attribute_errors] && options[:ignored_attribute_errors].any?
+	  str = str.gsub(/^line.*trimming empty.*\n/, '')  # the messages about empty are overzealous, and not invalid
+	  str = str.gsub(/^line.*proprietary.*\n/, '') if options[:ignore_proprietary] # if you use IE only attributes like wrap, or spellcheck or things not in standard
+    str = str.gsub(/^line.*(?:Error|Warning):.*<\/?(?:#{options[:ignored_tag_errors].join('|')})>.*\n/, '') if options[:ignored_tag_errors] && options[:ignored_tag_errors].any?
+    str = str.gsub(/^line.*(?:Error|Warning):.* attribute \"(?:#{options[:ignored_attribute_errors].join('|')})\".*\n/, '') if options[:ignored_attribute_errors] && options[:ignored_attribute_errors].any?
     if options[:ignored_errors] && options[:ignored_errors].any? && str.gsub(/^line.*(?:Error|Warning):/, '') =~ ignored_errors_regex
-      str.gsub!(Regexp.new(/^line.*(?:Error|Warning):/.source + '.*' + ignored_errors_regex.source + '.*' +/\n/.source), '')
+      str = str.gsub(Regexp.new(/^line.*(?:Error|Warning):/.source + '.*' + ignored_errors_regex.source + '.*' +/\n/.source), '')
     end
     str.gsub(/line [0-9]+ column [0-9]+ -/, '')
    # /line [0-9]+ column [0-9]+ - / +  =~ "line 1 column 1 - Warning: missing <!DOCTYPE> declaration"

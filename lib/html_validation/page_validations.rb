@@ -133,8 +133,8 @@ module PageValidations
 
     # Takes a url or filepath qne trims and sanitizes it for use as a filename.
     def filenameize(path)
-      path.gsub!(/www.|^(http:\/\/|\/|C:\\)/, '')
-      path.gsub(/[^0-9A-Za-z.]/, '_')
+      new_path = path.gsub(/www.|^(http:\/\/|\/|C:\\)/, '')
+      new_path.gsub(/[^0-9A-Za-z.]/, '_')
     end
 
   end
