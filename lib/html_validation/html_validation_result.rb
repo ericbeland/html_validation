@@ -44,7 +44,7 @@ class HTMLValidationResult
   # file system path, or url, so long it is uniquely associated with the passed in html.
   def valid?
     @exceptions = validate
-    File.delete(data_path("accepted")) if File.exists?(data_path("accepted")) if @exceptions == ''
+    File.delete(data_path("accepted")) if File.exist?(data_path("accepted")) if @exceptions == ''
     valid = (filter(@exceptions) == '' or accepted?(@exceptions))
     save_html_and_exceptions
     valid
@@ -58,7 +58,7 @@ class HTMLValidationResult
   end
 
   def reject!
-    if File.exists?(data_path("accepted"))
+    if File.exist?(data_path("accepted"))
       File.delete data_path("accepted")
     end
   end
@@ -90,7 +90,7 @@ class HTMLValidationResult
   # have we previously accepted this exact string for this path?
   def accepted?(exception_str)
     exception_str = filter(exception_str)
-    File.exists?(data_path('accepted')) ? filter(File.open(data_path('accepted'), "r").read) == exception_str : false
+    File.exist?(data_path('accepted')) ? filter(File.open(data_path('accepted'), "r").read) == exception_str : false
   end
 
   # Line numbers of exceptions are likely to change with any minor edit, so our validation
