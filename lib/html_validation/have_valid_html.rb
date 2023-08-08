@@ -1,5 +1,3 @@
-
-
 module PageValidations
 
   class HaveValidHTML

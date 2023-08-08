@@ -24,5 +24,4 @@ describe "HTMLValidationRSpecMatcher" do
 
     expect(@page).to_not have_valid_html
   end
-
 end
