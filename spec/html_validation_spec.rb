@@ -4,7 +4,7 @@ describe "HTMLValidation" do
   include HTMLValidationHelpers
 
   before(:each) do
-    FileUtils.mkdir tmp_path if !File.exists?('/tmp/validation')
+    FileUtils.mkdir tmp_path if !File.exist?('/tmp/validation')
     @h = HTMLValidation.new('/tmp/validation')
   end
 
