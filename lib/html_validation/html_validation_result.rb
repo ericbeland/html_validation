@@ -122,5 +122,4 @@ class HTMLValidationResult
     stderr.close
     result
   end
-
 end

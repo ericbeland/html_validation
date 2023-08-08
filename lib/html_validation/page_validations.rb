@@ -20,7 +20,6 @@ module PageValidations
 
 
   class HTMLValidation
-
     def self.result_attributes *names
       @@result_attributes = names.each do |name|
         class_eval(%Q{
@@ -136,6 +135,5 @@ module PageValidations
       new_path = path.gsub(/www.|^(http:\/\/|\/|C:\\)/, '')
       new_path.gsub(/[^0-9A-Za-z.]/, '_')
     end
-
   end
 end
